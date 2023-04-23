@@ -1,13 +1,8 @@
 import { ChangeEvent, FormEvent, Fragment, useState } from "react";
+import { detectLanguage } from "./functions";
 
 const size = 6;
-const englishRegex = /^[^fFlLrR]+$/;
-const swedishRegex = /^[^vVhHgG]+$/;
-const frenchRegex = /^[^dDaAgG]+$/;
 const dirs = ["N", "E", "S", "W"];
-const lefts = ["l", "v", "g"];
-const rights = ["r", "h", "d"];
-const forwards = ["f", "g", "a"];
 const arrY = [...Array(size)].map(() => crypto.randomUUID());
 const arrX = [...Array(size)].map(() => crypto.randomUUID());
 
@@ -26,37 +21,33 @@ const App: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { x, y, dir, command } = coord;
-
     const cmd = command.toLowerCase();
-
-    let lang = "en";
-    if (cmd.includes("v") || cmd.includes("h")) lang = "se";
-    if (cmd.includes("a") || cmd.includes("d")) lang = "fr";
+    const { left, right, forward } = detectLanguage(cmd);
+    const lastDirsIdx = dirs.length - 1;
 
     let tempX = x;
     let tempY = y;
     let tempDir = dir;
-    const lastDirsIdx = dirs.length - 1;
 
     for (let idx = 0; idx <= cmd.length; idx++) {
       const c = cmd.charAt(idx).toLowerCase();
       const currDirIdx = dirs.findIndex((item) => item === tempDir);
 
-      if (rights.includes(c)) {
+      if (c === right) {
         if (currDirIdx === lastDirsIdx) {
           tempDir = dirs[0];
         } else {
           tempDir = dirs[currDirIdx + 1];
         }
       }
-      if (lefts.includes(c)) {
+      if (c === left) {
         if (currDirIdx === 0) {
           tempDir = dirs[lastDirsIdx];
         } else {
           tempDir = dirs[currDirIdx - 1];
         }
       }
-      if (forwards.includes(c)) {
+      if (c === forward) {
         if (tempDir === "N") tempY = tempY - 1;
         if (tempDir === "S") tempY = tempY + 1;
         if (tempDir === "E") tempX = tempX + 1;
