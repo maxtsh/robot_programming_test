@@ -1,24 +1,18 @@
-import { ChangeEvent, FormEvent, Fragment, useState } from "react";
+import { Fragment, useState } from "react";
 import { detectLanguage } from "./functions";
+import { dirs, arrX, arrY } from "./constants";
 
-const size = 6;
-const dirs = ["N", "E", "S", "W"];
-const arrY = [...Array(size)].map(() => crypto.randomUUID());
-const arrX = [...Array(size)].map(() => crypto.randomUUID());
-
-const App: React.FC = () => {
+const App = () => {
   const [coord, setCoord] = useState({ x: 0, y: 0, dir: "N", command: "" });
 
-  const handleChange = ({
-    target: { name, value },
-  }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = ({ target: { name, value } }) => {
     setCoord((prev) => ({
       ...prev,
       [name]: !isNaN(Number(value)) ? Number(value) : value,
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const { x, y, dir, command } = coord;
     const cmd = command.toLowerCase();
@@ -64,7 +58,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <main>
+    <main role="main">
       <div className="wrapper">
         <div className="wrapper__content">
           <div className="wrapper__content__box">
@@ -87,7 +81,7 @@ const App: React.FC = () => {
             ))}
           </div>
         </div>
-        <form className="wrapper__form" onSubmit={handleSubmit}>
+        <form role="form" className="wrapper__form" onSubmit={handleSubmit}>
           <div className="wrapper__form__row">
             <select
               name="dir"
