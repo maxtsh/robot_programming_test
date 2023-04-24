@@ -68,13 +68,15 @@ const App = () => {
                   <div
                     key={xId}
                     className={`wrapper__content__box__cell ${
-                      coord.x === x && coord.y === y && "active"
+                      coord.x === x && coord.y === y ? "active" : ""
                     }`}
                   >
                     <span className="wrapper__content__box__cell__coord">
                       {x},{y}
                     </span>
-                    {coord.x === x && coord.y === y && <h1>{coord.dir}</h1>}
+                    {coord.x === x && coord.y === y && (
+                      <h1 title="direction_indicator">{coord.dir}</h1>
+                    )}
                   </div>
                 ))}
               </Fragment>
@@ -85,6 +87,8 @@ const App = () => {
           <div className="wrapper__form__row">
             <select
               name="dir"
+              title="direction"
+              aria-label="direction"
               onChange={handleChange}
               className="wrapper__form__row__input"
             >
@@ -94,6 +98,8 @@ const App = () => {
               <option value="W">West (W)</option>
             </select>
             <input
+              title="Enter X"
+              aria-label="Enter X"
               name="x"
               min="0"
               max="9"
@@ -103,6 +109,8 @@ const App = () => {
               className="wrapper__form__row__input"
             />
             <input
+              title="Enter Y"
+              aria-label="Enter Y"
               name="y"
               min="0"
               max="9"
@@ -115,6 +123,8 @@ const App = () => {
           <div className="wrapper__form__row">
             <input
               placeholder="Enter your command!"
+              title="Enter your command!"
+              aria-label="Enter your command!"
               type="text"
               id="command"
               name="command"
@@ -122,9 +132,11 @@ const App = () => {
               className="wrapper__form__row__input"
             />
             <input
-              className="wrapper__form__row__submit"
               type="submit"
               value="Order"
+              title="form-submit"
+              aria-label="form-submit"
+              className="wrapper__form__row__submit"
             />
           </div>
         </form>
